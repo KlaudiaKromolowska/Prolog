@@ -1,0 +1,38 @@
+/* wypisywanie na ekran */
+write("TO SIĘ WYPISZE")
+write/1 wypisuje napis
+nl - nowa linia
+
+/* pobieranie danych od użytkownika */
+read(Argument)
+read/1 prosi użytkownika o wpisanie termu i unifikuje go z podanym argumentem
+
+/* wymuszanie nawracania */
+true - wszystko się udało
+fakt(X,Y) :- true.  lub fakt(X,Y).
+
+fail - wymusza odwrót na Prologu 
+np. jest_mężczyzną(X), write(X), nl, fail.
+wtedy za każdym razem jak znajdziemy mężczyznę X, to dajemy znać Prologowi, że nie jest to dobra odpowiedź i Prolog szuka następnego -> w ten sposób wypiszemy wszystkich mężczyzn 
+
+/* modyfikacja bazy wiedzy */
+assert/1 predykat który zapamiętuje wartości zmiennych (fakty) i dodaje je do bazy wiedzy
+ale! potrzebne jest aby predykat który może mieć dynamicznie dopisywane fakty i reguły był odpowiednio zapowiedziany
+np.
+:- dynamic jest_mężczyzną/1.
+powyższa reguła nazywana jest /* celem */ i jej ciało wykonywanie jest przez Prolog od razu po wczytaniu bazy wiedzy
+
+assert(jest_mężczyzną(mateusz)). -> dodanie 'mateusz' jako mężczyzny do bazy wiedzy
+
+retract/1 predykat służący do zapominania od danym fakcie, usunięcie jakieś danej z bazy wiedzy
+retract(jest_mężczyzną(mateusz)). -> usunięcie 'mateusz' jako mężczyzny z bazy wiedzy
+
+retractall/1 predykat służący do zapominana o wszystkich faktach określonych w argumencie
+retractall(jest_mężczyzną(_)). -> usunięcie wszystkich mężczyzn z bazy wiedzy
+
++ assert/1 i retract/1 pozwalają usuwać nie tylko fakty, ale też całe reguły
+
+/* efekty uboczne */
+'Wypisywanie danych na ekran' oraz 'zmienianie bazy danych' są tak zwanymi 'efektami ubocznymi'. Funkcja/predykat zawiera efekty uboczne, jeżeli realizuje inne operacje niż zwracanie wyniku. Funkcja bez efektów ubocznych jest nazywana często 'funkcją czystą'. Główna zaletą czystych funkcji jest to, że dla tych samych argumentów zawsze zwracają ten sam wynik, podobnie jak ma to miejsce w matematyce.
+
+W Prologu porażka fail "cofa" wszystkie efekty kodu poza efektami ubocznymi. Z tego powodu używanie fail do realizacji pętli ma sens tylko wtedy, kiedy kod w pętli posiada efekty uboczne.

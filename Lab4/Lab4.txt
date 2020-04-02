@@ -1,0 +1,76 @@
+3.1
+usuń(X, [X|T], T).
+usuń(X, [H|T1], [H|T2]) :-
+	X\=H,
+	usuń(X, T1, T2).
+	
+3.2
+usuń_wszystkie(_,[],[]).
+usuń_wszystkie(X,[X|T],Result):-
+    usuń_wszystkie(X,T,Result).
+usuń_wszystkie(X,[H|T],[H|Result]):-
+    X \= H,
+    usuń_wszystkie(X,T,Result).
+
+3.3
+dodaj(A, T, [A|T]).
+dodaj(A, [H|T], [H|T2]):-
+	dodaj(A, T, T2).
+dodaj(3, [1,2,1,2],X).   polecenie
+
+3.4
+palindrom(L1):-
+	reverse(L1,L1).
+
+3.5
+podlista([],[]).
+podlista([H|T1], [H|T2]) :-
+	podlista(T1, T2).
+podlista([_|T1], L2) :-
+	podlista(T1,L2).
+	
+3.6
+odetnij_z_lewej(Number, Lista, NowaLista) :-
+	length(List_pom, Number),
+	append(List_pom, NowaLista, Lista).
+	
+odetnij_z_prawej(Number, Lista, NowaLista) :-
+	length(List_pom, Number),
+	append(NowaLista, List_pom, Lista).
+	
+3.7
+zawiera(_, []).
+zawiera(L,S):- append([_, S, _],L) ,S\=[].
+
+
+	
+3.8
+permutacja([],[]).
+palindrom([H|T], Lista) :-
+	permutacja(T, PT),
+	dodaj(H,PT, Lista).
+	
+3.9 
+podziel([L], [L], []).
+podziel([L,P], [L], [P]).
+podziel([L,P|O], [L|W], [P|E]):-
+        podziel(O, W, E).	
+4.1
+length_diff(L,0):-
+	is_empty_diff(L).
+length_diff([H|T]-E,X) :-
+	\+ is_empty_diff([H|T]-E),
+	length_diff(T-E, X1),
+	X is X1+1.
+	
+4.2
+member_diff(X,[X|T]-E):- not(is_empty_diff([X|T]-E)).
+                             
+member_diff(Y,[H|T]-E):-
+    not(is_empty_diff([H|T]-E)),
+    member_diff(Y,T-E).
+	
+member_diff(3,[1,2,3|E]-E).
+
+
+	

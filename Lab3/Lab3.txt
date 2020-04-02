@@ -1,0 +1,70 @@
+-- Listy w regułach
+trzeci_element([_,_,Trzeci|_], Trzeci).
+
+-- KREWNI 2.0
+process_command(list) :-
+    foreach(
+        jest_znajomym(Imie),
+        format(' Imie: ~w', Imie)
+    ).
+	
+
+-- ZAPYTANIA AGREGACYJNE - MISJE
+overlap(X-Y, Z-W) :-
+	Z>=X, X<W, Z<Y.
+max(Imie-A, _-Max, Imie-A):- A>=Max.
+max(_-A, Imie-Max, mie-Max):- A<Max.
+
+1. 
+setof(Autor, (A, B, C, D)^ksiazka(A, B, Autor, D), Autor)
+
+2. 
+findall(Tytuł, (ksiazka(_, Tytul, autor(_,_-Sm), wydanie(_,Rok)), Rok>Sm), Tytuly).
+
+3. 
+findall(Autor - Ksiazki, setof(Tytul, (A, C, D)^ksiazka(A, Tytul, autor(Autor, C), D), Ksiazki), Wynik).
+
+4. findall(Autor1 - Autor2, (ksiazka(_,_, autor(Autor1, Lifespan1),_), ksiazka(_,_,autor(Autor2,Lifespan2),_), ovelap(Lifespan1, Lifespan2), Autor1\=Autor2), Pary), sort(Pary,W)
+
+5. setof(C-Lifelength, (A,B,D,S,U)^(ksiazka(A,B, autor(C, U-S),D), Lifelength is S-U), DlugoscZycia), foldl(max, DlugoscZycia, none-0, Wynik).
+
+
+--ARYTMETYKA LIST
+-- Misja 1.
+list_number([], 0).
+list_number([_|Ogon],Dlugosc) :- 
+    list_number(Ogon, X),
+    Dlugosc is X+1.
+    
+-- Misja 2
+list_add([], L, L).
+list_add([H| T1], L2, [H|T2]) :- 
+    list_add(T1, L2, T2).
+
+-- Misja 3
+a)
+redukuj(X1, X2, Y) :- Y is X1 + X2.
+mapuj(X,Y) :- Y is 1.
+wynik(Lista, Wynik) :-
+	maplist(mapuj, Lista, L),
+    foldl(redukuj, L, 0, Wynik).
+
+b)
+redukuj(X1, X2, Y) :- Y is X1 + X2.
+foldl(redukuj, [1, -1, 3, -4, 5], 0, Wynik).
+	
+	
+-- 3.3
+redukuj(X1, X2, Y) :-
+	Y is X1+X2.
+	mapuj(_, Y) :- Y is 1.
+	list_number_mfr(L, Length) :-
+	maplist(mapuj, L, Wynik),
+	foldl(redukuj, Wynik, 0, Length).
+	
+	
+list_add_mfr(L1, L2, L3) :-
+	foldl(dodaj, L1, [], R1),
+	foldl(dodaj, R1, L2, L3).
+	
+dodaj(E, Acc, [E|Acc]).

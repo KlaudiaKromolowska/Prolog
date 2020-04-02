@@ -1,0 +1,18 @@
+jest_przodkiem(X,Y) :- jest_rodzicem(X,Y).
+jest_przodkiem(X,Y) :- jest_rodzicem(Z,Y),
+                       jest_przodkiem(X,Z).
+
+:- dynamic jest_krewnymDwa/2.
+jest_krewnym(X,Y) :- jest_przodkiem(Z,X),
+                     jest_przodkiem(Z,Y),
+    		     X \= Y,
+		     \+ jest_krewnymDwa(X,Y),
+		     \+ jest_krewnymDwa(Y,X),
+		     assert(jest_krewnymDwa(X,Y)).
+
+% jest_rodzicem(imię rodzica, imię dziecka)
+jest_rodzicem(kasia,robert).
+jest_rodzicem(kasia,michał).
+jest_rodzicem(tomek,robert).
+jest_rodzicem(tomek,eliza).
+jest_rodzicem(robert,miriam).

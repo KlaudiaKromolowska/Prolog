@@ -1,0 +1,33 @@
+'ARYTMETYKA------------------------------------------------------------'
+jeżeli chcemy przypisać do zmiennej wynik jakiegoś działania to nie możemy użyć operatora =, ponieważ jest to operator unifikacji, a sama unifikacja nie ma nic wspólnego z wynikiem działania - dla niej +, -, * itd. to po porstu kolejny symbol 
+
+dlatego zapytanie:
+?- X = 4 + 5.
+zwróci nam:
+X = 4 + 5
+
+ze względu na wykonywanie obliczeń w prologu występuje operator is - różni się on od zwykłej unifikacji tym, że przed przeprowadzeniem unifikacji, najpierw ewaluuje prawą stronę
+?- X is 4 + 5.
+X = 9
+
+nie można ewaluować prawego wyrażenia ze zmienną np. Y nie posiadającą wartości
+?- X is Y * 5 + 3. 	 -----> 'NIE ZADZIAŁA!'
+?- Y = 4, X is Y * 5 + 3 -----> 'TAK JEST SUPER<3'
+
+WAZNE: 'w Prologu zmienne nigdy nie zmieniają wartości - nie można zatem zinkrementować zmiennej! Aby zwiększyć jakąś wartość o 1, zawsze musi zostać wprowadzona nowa zmienna'
+
+gdy chcemy obliczyć obie strony równości:
+?- 6 + 3 is (9 - 5) * 9 / 4. 		-----> 'NIE ZADZIAŁA!' bo is nie ewaluuje lewej strony
+?- Z is 6 + 3, Z is (9 - 5) * 9 / 4.	-----> 'TAK JEST SUPER<3' zmienna tymczasowa
+?- 6 + 3 =:= (9 - 5) * 9 / 4.		-----> 'TAK JEST SUPER<3' operator =:= ewaluuje obie strony
+
+'REKURENCJA------------------------------------------------------------'
+% potęga(podstawia, wykładnik, wynik)
+% podniesienie do 0-wej potęgi zawsze zwraca 1 jako wynik
+potęga(_, 0, 1).
+% w innym wypadku jest to Podstawa * potęga o wykładniku o jeden mniejszym
+potęga(Podstawa, Wykładnik, Wynik) :-
+   Wykładnik > 0,
+   MniejszyWykładnik is Wykładnik - 1,
+   potęga(Podstawa, MniejszyWykładnik, MniejszyWynik),
+   Wynik is MniejszyWynik * Podstawa.
